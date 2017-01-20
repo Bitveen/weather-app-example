@@ -8,10 +8,11 @@ export default class SearchForm extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-
-
-
-        this.refs.cityName.value = '';
+        let cityName = this.refs.cityName.value;
+        if (cityName) {
+            this.props.router.replace(`/search/${cityName}`);
+            this.refs.cityName.value = '';
+        }
     }
 
     render() {

@@ -13,6 +13,7 @@ module.exports = {
             SearchForm: 'components/SearchForm.jsx',
             Weather: 'components/Weather.jsx',
             WeatherByCity: 'containers/WeatherByCity.jsx',
+            WeatherBySearchHistory: 'containers/WeatherBySearchHistory.jsx',
             actions: 'actions.jsx',
             reducers: 'reducers.jsx',
             api: 'api.jsx',

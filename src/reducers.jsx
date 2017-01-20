@@ -42,8 +42,23 @@ const fetchedWeather = (state = fetchedWeatherDefaultState, action) => {
 
 
 
+const searchHistoryDefaultState = [
+    {
+        id: 1,
+        temp: -10,
+        city: 'Moscow',
+        fetchedAt: Date.now()
+    },
+    {
+        id: 2,
+        temp: -1,
+        city: 'Kudrovo',
+        fetchedAt: Date.now()
+    }
+];
 
-const searchHistory = (state = [], action) => {
+
+const searchHistory = (state = searchHistoryDefaultState, action) => {
     switch (action.type) {
         case ActionTypes.SAVE_WEATHER:
             return state.concat([ action.weather ]);

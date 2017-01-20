@@ -8,8 +8,23 @@ export default class Weather extends React.Component {
     }
 
     componentDidMount() {
-        this.props.fetchWeatherByPosition();
+        if (this.props.fetch) {
+            if (this.props.cityName) {
+                this.props.fetch(this.props.cityName);
+            } else {
+                this.props.fetch();
+            }
+        }
     }
+
+
+    // componentWillReceiveProps(nextProps) {
+    //     console.log(nextProps);
+    //     if (this.props.fetch && (nextProps.cityName !== this.props.fetchedWeather.weather.city)) {
+    //         this.props.fetch(this.props.cityName);
+    //     }
+    // }
+
 
     render() {
         let { fetchedWeather } = this.props;
@@ -21,7 +36,7 @@ export default class Weather extends React.Component {
                     (
                         <div className="weather">
                             <div className="page-header">
-                                <h4>Your current location is: <strong>{fetchedWeather.weather.city}</strong></h4>
+                                <h4>{this.props.cityName ? "City" : "Your current location is"}: <strong>{fetchedWeather.weather.city}</strong></h4>
                                 Fetched at: <strong>{moment(fetchedWeather.weather.fetchedAt).format('DD.MM.YYYY HH:mm')}</strong>
                             </div>
                             <div className="weather-temperature">

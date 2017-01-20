@@ -8,7 +8,7 @@ import Weather from 'Weather';
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchWeatherByPosition: () => dispatch(fetchWeatherByPosition())
+        fetch: () => dispatch(fetchWeatherByPosition())
     };
 };
 

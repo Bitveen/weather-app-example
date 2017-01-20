@@ -14,7 +14,7 @@ import thunkMiddleware from 'redux-thunk';
 import App from 'App';
 import CurrentLocationWeather from 'CurrentLocationWeather';
 import WeatherByCity from 'WeatherByCity';
-
+import WeatherBySearchHistory from 'WeatherBySearchHistory';
 
 /**
  * Other imports
@@ -30,10 +30,10 @@ import rootReducer from 'reducers';
  */
 const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
 
-
-store.subscribe(() => {
-    console.log(store.getState());
-});
+//
+// store.subscribe(() => {
+//     console.log(store.getState());
+// });
 
 /**
  * Routing
@@ -43,7 +43,8 @@ const routes = (
     <Router history={history}>
         <Route component={App} path='/'>
             <IndexRoute component={CurrentLocationWeather} />
-            <Route component={WeatherByCity} path='/city/:id' />
+            <Route component={WeatherBySearchHistory} path='/history/search/:id'/>
+            <Route component={WeatherByCity} path='/search/:cityName'/>
         </Route>
     </Router>
 );
