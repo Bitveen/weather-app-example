@@ -74,7 +74,11 @@
 
 	var _CurrentLocationWeather2 = _interopRequireDefault(_CurrentLocationWeather);
 
-	var _reducers = __webpack_require__(279);
+	var _WeatherByCity = __webpack_require__(279);
+
+	var _WeatherByCity2 = _interopRequireDefault(_WeatherByCity);
+
+	var _reducers = __webpack_require__(280);
 
 	var _reducers2 = _interopRequireDefault(_reducers);
 
@@ -82,6 +86,11 @@
 
 	/**
 	 * Store
+	 */
+
+
+	/**
+	 * Components
 	 */
 	var store = (0, _redux.createStore)(_reducers2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default));
 
@@ -93,11 +102,6 @@
 	/**
 	 * Other imports
 	 */
-
-
-	/**
-	 * Components
-	 */
 	var history = (0, _reactRouterRedux.syncHistoryWithStore)(_reactRouter.browserHistory, store);
 	var routes = _react2.default.createElement(
 	    _reactRouter.Router,
@@ -105,7 +109,8 @@
 	    _react2.default.createElement(
 	        _reactRouter.Route,
 	        { component: _App2.default, path: '/' },
-	        _react2.default.createElement(_reactRouter.IndexRoute, { component: _CurrentLocationWeather2.default })
+	        _react2.default.createElement(_reactRouter.IndexRoute, { component: _CurrentLocationWeather2.default }),
+	        _react2.default.createElement(_reactRouter.Route, { component: _WeatherByCity2.default, path: '/city/:cityName' })
 	    )
 	);
 
@@ -29127,7 +29132,12 @@
 	            _react2.default.createElement(
 	                'span',
 	                { className: 'navbar-brand' },
-	                'WeatherApp'
+	                'WeatherApp by ',
+	                _react2.default.createElement(
+	                    'a',
+	                    { href: 'https://github.com/Bitveen', target: '_blank' },
+	                    'bitveen'
+	                )
 	            )
 	        ),
 	        _react2.default.createElement(
@@ -29137,7 +29147,16 @@
 	                'div',
 	                { className: 'col-lg-8' },
 	                _react2.default.createElement(_SearchForm2.default, null),
-	                children
+	                _react2.default.createElement('hr', null),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'panel panel-default' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'panel-body' },
+	                        children
+	                    )
+	                )
 	            ),
 	            _react2.default.createElement(
 	                'div',
@@ -29154,7 +29173,7 @@
 /* 276 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -29168,9 +29187,17 @@
 
 	var SearchHistory = function SearchHistory() {
 	    return _react2.default.createElement(
-	        'div',
-	        null,
-	        'SearchHistory'
+	        "div",
+	        { className: "search-history" },
+	        _react2.default.createElement(
+	            "div",
+	            { className: "page-header" },
+	            _react2.default.createElement(
+	                "h4",
+	                null,
+	                "Search history"
+	            )
+	        )
 	    );
 	};
 
@@ -29186,24 +29213,153 @@
 	    value: true
 	});
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var SearchForm = function SearchForm() {
-	    return _react2.default.createElement(
-	        'div',
-	        null,
-	        'SearchForm'
-	    );
-	};
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var SearchForm = function (_React$Component) {
+	    _inherits(SearchForm, _React$Component);
+
+	    function SearchForm(props) {
+	        _classCallCheck(this, SearchForm);
+
+	        var _this = _possibleConstructorReturn(this, (SearchForm.__proto__ || Object.getPrototypeOf(SearchForm)).call(this, props));
+
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(SearchForm, [{
+	        key: 'handleSubmit',
+	        value: function handleSubmit(e) {
+	            e.preventDefault();
+	            console.log(this.refs.cityName.value);
+	            this.refs.cityName.value = '';
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'search-form' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'page-header' },
+	                    _react2.default.createElement(
+	                        'h4',
+	                        null,
+	                        'Search weather by city'
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'form',
+	                    { onSubmit: this.handleSubmit },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'input-group' },
+	                        _react2.default.createElement('input', { type: 'text',
+	                            className: 'form-control input-md',
+	                            autoComplete: 'off',
+	                            ref: 'cityName',
+	                            placeholder: 'Type in city name...' }),
+	                        _react2.default.createElement(
+	                            'span',
+	                            { className: 'input-group-btn' },
+	                            _react2.default.createElement(
+	                                'button',
+	                                { className: 'btn btn-primary btn-md',
+	                                    type: 'submit' },
+	                                _react2.default.createElement('span', { className: 'glyphicon glyphicon-search' }),
+	                                ' Search'
+	                            )
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return SearchForm;
+	}(_react2.default.Component);
 
 	exports.default = SearchForm;
+	;
 
 /***/ },
 /* 278 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _api = __webpack_require__(282);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var CurrentLocationWeather = function (_React$Component) {
+	    _inherits(CurrentLocationWeather, _React$Component);
+
+	    function CurrentLocationWeather(props) {
+	        _classCallCheck(this, CurrentLocationWeather);
+
+	        return _possibleConstructorReturn(this, (CurrentLocationWeather.__proto__ || Object.getPrototypeOf(CurrentLocationWeather)).call(this, props));
+	    }
+
+	    _createClass(CurrentLocationWeather, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            (0, _api.getCurrentPosition)().then(function (coords) {
+	                console.log(coords);
+	            });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'current-location-weather' },
+	                _react2.default.createElement(
+	                    'h4',
+	                    { className: 'text-center' },
+	                    _react2.default.createElement('i', { className: 'fa fa-cog fa-spin' })
+	                )
+	            );
+	        }
+	    }]);
+
+	    return CurrentLocationWeather;
+	}(_react2.default.Component);
+
+	exports.default = CurrentLocationWeather;
+	;
+
+/***/ },
+/* 279 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29218,22 +29374,25 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var CurrentLocationWeather = function CurrentLocationWeather() {
+	var WeatherByCity = function WeatherByCity(_ref) {
+	    var cityName = _ref.params.cityName;
+
 	    return _react2.default.createElement(
 	        'div',
 	        null,
 	        _react2.default.createElement(
 	            'h3',
 	            null,
-	            'CurrentLocationWeather'
+	            'WeatherByCity: ',
+	            cityName
 	        )
 	    );
 	};
 
-	exports.default = CurrentLocationWeather;
+	exports.default = WeatherByCity;
 
 /***/ },
-/* 279 */
+/* 280 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29246,7 +29405,7 @@
 
 	var _redux = __webpack_require__(233);
 
-	var _actions = __webpack_require__(280);
+	var _actions = __webpack_require__(281);
 
 	var actions = _interopRequireWildcard(_actions);
 
@@ -29257,10 +29416,34 @@
 	});
 
 /***/ },
-/* 280 */
+/* 281 */
 /***/ function(module, exports) {
 
 	"use strict";
+
+/***/ },
+/* 282 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	var getCurrentPosition = exports.getCurrentPosition = function getCurrentPosition() {
+
+	    return new Promise(function (resolve, reject) {
+	        if (navigator.geolocation) {
+	            navigator.geolocation.getCurrentPosition(function (position) {
+	                resolve(position.coords);
+	            }, function (err) {
+	                reject(err);
+	            });
+	        } else {
+	            reject('Geolocation not supported');
+	        }
+	    });
+	};
 
 /***/ }
 /******/ ]);

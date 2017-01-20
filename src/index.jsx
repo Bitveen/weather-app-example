@@ -13,6 +13,8 @@ import thunkMiddleware from 'redux-thunk';
  */
 import App from 'App';
 import CurrentLocationWeather from 'CurrentLocationWeather';
+import WeatherByCity from 'WeatherByCity';
+
 
 /**
  * Other imports
@@ -38,7 +40,8 @@ const history = syncHistoryWithStore(browserHistory, store);
 const routes = (
     <Router history={history}>
         <Route component={App} path='/'>
-            <IndexRoute component={CurrentLocationWeather}/>
+            <IndexRoute component={CurrentLocationWeather} />
+            <Route component={WeatherByCity} path='/city/:cityName' />
         </Route>
     </Router>
 );

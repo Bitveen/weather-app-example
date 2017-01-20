@@ -12,13 +12,19 @@ const App = ({ children }) => {
     return (
         <div className="container">
             <nav className="navbar navbar-default">
-                <span className="navbar-brand">WeatherApp</span>
+                <span className="navbar-brand">WeatherApp by <a href="https://github.com/Bitveen" target="_blank">bitveen</a></span>
             </nav>
 
             <div className="row">
                 <div className="col-lg-8">
                     <SearchForm />
-                    {children}
+                    <hr/>
+                    <div className="panel panel-default">
+                        <div className="panel-body">
+                            {children}
+                        </div>
+                    </div>
+
                 </div>
                 <div className="col-lg-4">
                     <SearchHistory />

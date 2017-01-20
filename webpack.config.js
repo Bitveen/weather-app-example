@@ -11,8 +11,10 @@ module.exports = {
             CurrentLocationWeather: 'components/CurrentLocationWeather.jsx',
             SearchHistory: 'components/SearchHistory.jsx',
             SearchForm: 'components/SearchForm.jsx',
+            WeatherByCity: 'components/WeatherByCity.jsx',
             actions: 'actions.jsx',
-            reducers: 'reducers.jsx'
+            reducers: 'reducers.jsx',
+            api: 'api.jsx'
         },
         extensions: ['', '.jsx', '.js']
     },
