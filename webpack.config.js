@@ -14,7 +14,8 @@ module.exports = {
             WeatherByCity: 'components/WeatherByCity.jsx',
             actions: 'actions.jsx',
             reducers: 'reducers.jsx',
-            api: 'api.jsx'
+            api: 'api.jsx',
+            actionTypes: 'actionTypes.jsx'
         },
         extensions: ['', '.jsx', '.js']
     },

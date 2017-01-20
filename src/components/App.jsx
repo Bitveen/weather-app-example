@@ -12,7 +12,9 @@ const App = ({ children }) => {
     return (
         <div className="container">
             <nav className="navbar navbar-default">
-                <span className="navbar-brand">WeatherApp by <a href="https://github.com/Bitveen" target="_blank">bitveen</a></span>
+                <span className="navbar-brand">
+                    WeatherApp by <a href="https://github.com/Bitveen" target="_blank">bitveen</a>
+                </span>
             </nav>
 
             <div className="row">
@@ -23,6 +25,7 @@ const App = ({ children }) => {
                         <div className="panel-body">
                             {children}
                         </div>
+                        <div className="panel-footer"></div>
                     </div>
 
                 </div>

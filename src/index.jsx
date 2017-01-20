@@ -31,7 +31,9 @@ import rootReducer from 'reducers';
 const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
 
 
-
+store.subscribe(() => {
+    console.log(store.getState());
+});
 
 /**
  * Routing
