@@ -2,9 +2,6 @@ import fetch from 'isomorphic-fetch';
 
 const WEATHER_URL = 'http://api.openweathermap.org/data/2.5/weather?appid=ce1e54364eca9683d50fe6e14499e5d5&units=metric';
 
-//q=London
-
-
 const getCurrentPosition = () => {
     return new Promise((resolve, reject) => {
         if (navigator.geolocation) {
@@ -24,4 +21,9 @@ export const getWeatherByCurrentPosition = () => {
     return getCurrentPosition().then((coords) => {
         return fetch(`${WEATHER_URL}&lat=${coords.latitude}&lon=${coords.longitude}`);
     });
+};
+
+
+export const getWeatherByCityName = (cityName) => {
+    return fetch(`${WEATHER_URL}&q=${cityName}`);
 };

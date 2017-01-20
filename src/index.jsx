@@ -43,7 +43,7 @@ const routes = (
     <Router history={history}>
         <Route component={App} path='/'>
             <IndexRoute component={CurrentLocationWeather} />
-            <Route component={WeatherByCity} path='/city/:cityName' />
+            <Route component={WeatherByCity} path='/city/:id' />
         </Route>
     </Router>
 );

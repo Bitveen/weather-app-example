@@ -8,10 +8,11 @@ module.exports = {
         root: __dirname + '/src',
         alias: {
             App: 'components/App.jsx',
-            CurrentLocationWeather: 'components/CurrentLocationWeather.jsx',
+            CurrentLocationWeather: 'containers/CurrentLocationWeather.jsx',
             SearchHistory: 'components/SearchHistory.jsx',
             SearchForm: 'components/SearchForm.jsx',
-            WeatherByCity: 'components/WeatherByCity.jsx',
+            Weather: 'components/Weather.jsx',
+            WeatherByCity: 'containers/WeatherByCity.jsx',
             actions: 'actions.jsx',
             reducers: 'reducers.jsx',
             api: 'api.jsx',

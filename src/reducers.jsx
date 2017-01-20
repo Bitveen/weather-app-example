@@ -7,28 +7,30 @@ import * as ActionTypes from 'actionTypes';
 
 
 /**
- * Default State for current location weather
- * @type {Object}
+ * Default state for fetched weather
+ *
  */
-const currentLocationWeatherState = {
+const fetchedWeatherDefaultState = {
     isFetching: false,
     weather: {}
 };
-const currentLocationWeather = (state = currentLocationWeatherState, action) => {
+const fetchedWeather = (state = fetchedWeatherDefaultState, action) => {
     switch (action.type) {
-        case ActionTypes.REQUEST_CURRENT_LOCATION_WEATHER:
+        case ActionTypes.REQUEST_WEATHER:
             return Object.assign({}, state, {
                 isFetching: true
             });
-        case ActionTypes.SUCCESS_CURRENT_LOCATION_WEATHER:
+        case ActionTypes.SUCCESS_WEATHER:
             return Object.assign({}, state, {
                 isFetching: false,
                 weather: {
+                    id: action.id,
                     temp: action.weather.main.temp,
-                    location: action.weather.name
+                    city: action.weather.name,
+                    fetchedAt: action.fetchedAt
                 }
             });
-        case ActionTypes.ERROR_CURRENT_LOCATION_WEATHER:
+        case ActionTypes.ERROR_WEATHER:
             return Object.assign({}, state, {
                 isFetching: false
             });
@@ -41,7 +43,23 @@ const currentLocationWeather = (state = currentLocationWeatherState, action) => 
 
 
 
+const searchHistory = (state = [], action) => {
+    switch (action.type) {
+        case ActionTypes.SAVE_WEATHER:
+            return state.concat([ action.weather ]);
+        case ActionTypes.REMOVE_WEATHER:
+            return state.filter(weather => weather.id !== action.id);
+        default:
+            return state;
+    }
+};
+
+
+
+
+
 export default combineReducers({
     routing: routerReducer,
-    currentLocationWeather: currentLocationWeather
+    fetchedWeather: fetchedWeather,
+    searchHistory: searchHistory
 });

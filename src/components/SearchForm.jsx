@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 export default class SearchForm extends React.Component {
     constructor(props) {
         super(props);
@@ -9,7 +8,9 @@ export default class SearchForm extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        console.log(this.refs.cityName.value);
+
+
+
         this.refs.cityName.value = '';
     }
 

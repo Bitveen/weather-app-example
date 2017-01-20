@@ -1,34 +1,66 @@
 import * as ActionTypes from 'actionTypes';
-import { getWeatherByCurrentPosition } from 'api';
+import { getWeatherByCurrentPosition, getWeatherByCityName } from 'api';
+import uuid from 'uuid';
 
 
-const requestCurrentLocationWeather = () => {
+
+
+
+/**
+ * Save or Remove fetched weather
+ *
+ */
+const saveWeather = (weather) => {
     return {
-        type: ActionTypes.REQUEST_CURRENT_LOCATION_WEATHER
+        type: ActionTypes.SAVE_WEATHER,
+        weather
     };
 };
-const successCurrentLocationWeather = (weather) => {
+
+const removeWeather = (id) => {
     return {
-        type: ActionTypes.SUCCESS_CURRENT_LOCATION_WEATHER,
-        weather: weather
+        type: ActionTypes.REMOVE_WEATHER,
+        id
     };
 };
 
 
 
+
+/**
+ * Fetch weather from API
+ *
+ */
+const requestWeather = () => {
+    return {
+        type: ActionTypes.REQUEST_WEATHER
+    };
+};
+const successWeather = (weather) => {
+    return {
+        type: ActionTypes.SUCCESS_WEATHER,
+        weather,
+        id: uuid(),
+        fetchedAt: Date.now()
+    };
+};
 export const fetchWeatherByPosition = () => {
     return dispatch => {
-        dispatch(requestCurrentLocationWeather());
+        dispatch(requestWeather());
         return getWeatherByCurrentPosition()
             .then(response => response.json())
             .then(fetchedWeather => {
-                dispatch(successCurrentLocationWeather(fetchedWeather));
+                dispatch(successWeather(fetchedWeather));
             });
     };
 };
-
-
-
-
-export const fetchWeatherByCity = (cityName) => {
+export const fetchWeatherByCityName = (cityName) => {
+    return dispatch => {
+        dispatch(requestWeather());
+        return getWeatherByCityName(cityName)
+            .then(response => response.json())
+            .then(fetchedWeather => {
+                dispatch(successWeather(fetchedWeather));
+            });
+    };
 };
