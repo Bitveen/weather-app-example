@@ -1,13 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { connect } from 'react-redux';
 import moment from 'moment';
-
-const mapStateToProps = (state) => {
-    return {
-        searchHistory: state.searchHistory
-    };
-};
 
 
 const SearchHistory = (props) => {
@@ -57,4 +50,4 @@ const SearchHistory = (props) => {
 };
 
 
-export default connect(mapStateToProps)(SearchHistory);
+export default SearchHistory;

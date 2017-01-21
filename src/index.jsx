@@ -31,10 +31,6 @@ import { getFromLocalStorage, saveToLocalStorage } from 'api';
 const store = createStore(rootReducer, getFromLocalStorage(), applyMiddleware(thunkMiddleware));
 
 
-store.subscribe(() => {
-    console.log(store.getState());
-});
-
 
 
 /**
@@ -56,8 +52,8 @@ const routes = (
 ReactDOM.render(
     <Provider store={store}>
         {routes}
-    </Provider>
-,document.getElementById('app'));
+    </Provider>,document.getElementById('app')
+);
 
 
 store.subscribe(() => {

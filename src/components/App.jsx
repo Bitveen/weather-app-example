@@ -1,11 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router';
+import { connect } from 'react-redux';
 
 import SearchHistory from 'SearchHistory';
 import SearchForm from 'SearchForm';
 import Navbar from 'Navbar';
 
-const App = ({ children }) => {
+
+const mapStateToProps = (state) => {
+    return {
+        searchHistory: state.searchHistory
+    }
+};
+
+
+const App = ({ searchHistory, children }) => {
     return (
         <div className="container">
             <Navbar />
@@ -20,11 +29,11 @@ const App = ({ children }) => {
                     </div>
                 </div>
                 <div className="col-lg-4">
-                    <SearchHistory />
+                    <SearchHistory searchHistory={searchHistory} />
                 </div>
             </div>
         </div>
     );
 };
 
-export default App;
+export default connect(mapStateToProps)(App);

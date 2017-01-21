@@ -58,10 +58,18 @@ export const fetchWeatherByPosition = () => {
     return dispatch => {
         dispatch(requestWeather());
         return getWeatherByCurrentPosition()
-            .then(response => response.json())
-            .then(fetchedWeather => {
-                dispatch(successWeather(fetchedWeather));
-            }).catch((error) => {
+            .then(response => {
+                if (response.status < 400) {
+                    return response.json().then(fetchedWeather => {
+                        dispatch(successWeather(fetchedWeather));
+                    });
+                } else {
+                    return response.json().then(error => {
+                        return Promise.reject(error);
+                    });
+                }
+            })
+            .catch((error) => {
                 dispatch(errorWeather(error));
             });
     };

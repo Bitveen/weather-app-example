@@ -31,11 +31,11 @@ export const getWeatherByCityName = (cityName) => {
 
 
 export const saveToLocalStorage = (state) => {
-    localStorage.setItem('state', JSON.stringify(state));
+    localStorage.setItem('weatherapp-state', JSON.stringify(state));
 };
 
 export const getFromLocalStorage = () => {
-    let state = localStorage.getItem('state');
+    let state = localStorage.getItem('weatherapp-state');
     if (state) {
         return JSON.parse(state);
     }

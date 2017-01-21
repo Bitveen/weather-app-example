@@ -104,16 +104,12 @@
 	var store = (0, _redux.createStore)(_reducers2.default, (0, _api.getFromLocalStorage)(), (0, _redux.applyMiddleware)(_reduxThunk2.default));
 
 	/**
-	 * Components
+	 * Routing
 	 */
 
 
-	store.subscribe(function () {
-	    console.log(store.getState());
-	});
-
 	/**
-	 * Routing
+	 * Components
 	 */
 	var history = (0, _reactRouterRedux.syncHistoryWithStore)(_reactRouter.browserHistory, store);
 	var routes = _react2.default.createElement(
@@ -29128,6 +29124,8 @@
 
 	var _reactRouter = __webpack_require__(178);
 
+	var _reactRedux = __webpack_require__(259);
+
 	var _SearchHistory = __webpack_require__(276);
 
 	var _SearchHistory2 = _interopRequireDefault(_SearchHistory);
@@ -29142,8 +29140,15 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	var mapStateToProps = function mapStateToProps(state) {
+	    return {
+	        searchHistory: state.searchHistory
+	    };
+	};
+
 	var App = function App(_ref) {
-	    var children = _ref.children;
+	    var searchHistory = _ref.searchHistory,
+	        children = _ref.children;
 
 	    return _react2.default.createElement(
 	        'div',
@@ -29170,13 +29175,13 @@
 	            _react2.default.createElement(
 	                'div',
 	                { className: 'col-lg-4' },
-	                _react2.default.createElement(_SearchHistory2.default, null)
+	                _react2.default.createElement(_SearchHistory2.default, { searchHistory: searchHistory })
 	            )
 	        )
 	    );
 	};
 
-	exports.default = App;
+	exports.default = (0, _reactRedux.connect)(mapStateToProps)(App);
 
 /***/ },
 /* 276 */
@@ -29194,19 +29199,11 @@
 
 	var _reactRouter = __webpack_require__(178);
 
-	var _reactRedux = __webpack_require__(259);
-
 	var _moment = __webpack_require__(277);
 
 	var _moment2 = _interopRequireDefault(_moment);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var mapStateToProps = function mapStateToProps(state) {
-	    return {
-	        searchHistory: state.searchHistory
-	    };
-	};
 
 	var SearchHistory = function SearchHistory(props) {
 
@@ -29272,7 +29269,7 @@
 	    );
 	};
 
-	exports.default = (0, _reactRedux.connect)(mapStateToProps)(SearchHistory);
+	exports.default = SearchHistory;
 
 /***/ },
 /* 277 */
@@ -44353,9 +44350,15 @@
 	    return function (dispatch) {
 	        dispatch(requestWeather());
 	        return (0, _api.getWeatherByCurrentPosition)().then(function (response) {
-	            return response.json();
-	        }).then(function (fetchedWeather) {
-	            dispatch(successWeather(fetchedWeather));
+	            if (response.status < 400) {
+	                return response.json().then(function (fetchedWeather) {
+	                    dispatch(successWeather(fetchedWeather));
+	                });
+	            } else {
+	                return response.json().then(function (error) {
+	                    return Promise.reject(error);
+	                });
+	            }
 	        }).catch(function (error) {
 	            dispatch(errorWeather(error));
 	        });
@@ -44449,11 +44452,11 @@
 	};
 
 	var saveToLocalStorage = exports.saveToLocalStorage = function saveToLocalStorage(state) {
-	    localStorage.setItem('state', JSON.stringify(state));
+	    localStorage.setItem('weatherapp-state', JSON.stringify(state));
 	};
 
 	var getFromLocalStorage = exports.getFromLocalStorage = function getFromLocalStorage() {
-	    var state = localStorage.getItem('state');
+	    var state = localStorage.getItem('weatherapp-state');
 	    if (state) {
 	        return JSON.parse(state);
 	    }
