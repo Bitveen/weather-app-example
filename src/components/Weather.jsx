@@ -33,7 +33,7 @@ export default class Weather extends React.Component {
     render() {
 
         if (this.props.fetchedWeather && this.props.fetchedWeather.fetchError) {
-            return <FetchError message="Fetch error." />
+            return <FetchError message={this.props.fetchedWeather.fetchError.message} />
         }
 
 

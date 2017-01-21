@@ -47,9 +47,10 @@ const successWeather = (weather) => {
     };
 };
 
-const errorWeather = () => {
+const errorWeather = (error) => {
     return {
-        type: ActionTypes.ERROR_WEATHER
+        type: ActionTypes.ERROR_WEATHER,
+        fetchError: error
     };
 };
 
@@ -60,8 +61,8 @@ export const fetchWeatherByPosition = () => {
             .then(response => response.json())
             .then(fetchedWeather => {
                 dispatch(successWeather(fetchedWeather));
-            }).catch(() => {
-                dispatch(errorWeather());
+            }).catch((error) => {
+                dispatch(errorWeather(error));
             });
     };
 };
@@ -69,12 +70,20 @@ export const fetchWeatherByCityName = (cityName) => {
     return dispatch => {
         dispatch(requestWeather());
         return getWeatherByCityName(cityName)
-            .then(response => response.json())
-            .then(fetchedWeather => {
-                dispatch(successWeather(fetchedWeather));
-                dispatch(saveWeather(fetchedWeather));
-            }).catch(() => {
-                dispatch(errorWeather());
+            .then(response => {
+                if (response.status < 400) {
+                    return response.json().then(fetchedWeather => {
+                        dispatch(successWeather(fetchedWeather));
+                        dispatch(saveWeather(fetchedWeather));
+                    });
+                } else {
+                    return response.json().then(error => {
+                        return Promise.reject(error);
+                    });
+                }
+            })
+            .catch(error => {
+                dispatch(errorWeather(error));
             });
     };
 };

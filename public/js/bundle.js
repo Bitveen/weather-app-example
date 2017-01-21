@@ -104,12 +104,16 @@
 	var store = (0, _redux.createStore)(_reducers2.default, (0, _api.getFromLocalStorage)(), (0, _redux.applyMiddleware)(_reduxThunk2.default));
 
 	/**
-	 * Routing
+	 * Components
 	 */
 
 
+	store.subscribe(function () {
+	    console.log(store.getState());
+	});
+
 	/**
-	 * Components
+	 * Routing
 	 */
 	var history = (0, _reactRouterRedux.syncHistoryWithStore)(_reactRouter.browserHistory, store);
 	var routes = _react2.default.createElement(
@@ -44338,9 +44342,10 @@
 	    };
 	};
 
-	var errorWeather = function errorWeather() {
+	var errorWeather = function errorWeather(error) {
 	    return {
-	        type: ActionTypes.ERROR_WEATHER
+	        type: ActionTypes.ERROR_WEATHER,
+	        fetchError: error
 	    };
 	};
 
@@ -44351,8 +44356,8 @@
 	            return response.json();
 	        }).then(function (fetchedWeather) {
 	            dispatch(successWeather(fetchedWeather));
-	        }).catch(function () {
-	            dispatch(errorWeather());
+	        }).catch(function (error) {
+	            dispatch(errorWeather(error));
 	        });
 	    };
 	};
@@ -44360,12 +44365,18 @@
 	    return function (dispatch) {
 	        dispatch(requestWeather());
 	        return (0, _api.getWeatherByCityName)(cityName).then(function (response) {
-	            return response.json();
-	        }).then(function (fetchedWeather) {
-	            dispatch(successWeather(fetchedWeather));
-	            dispatch(saveWeather(fetchedWeather));
-	        }).catch(function () {
-	            dispatch(errorWeather());
+	            if (response.status < 400) {
+	                return response.json().then(function (fetchedWeather) {
+	                    dispatch(successWeather(fetchedWeather));
+	                    dispatch(saveWeather(fetchedWeather));
+	                });
+	            } else {
+	                return response.json().then(function (error) {
+	                    return Promise.reject(error);
+	                });
+	            }
+	        }).catch(function (error) {
+	            dispatch(errorWeather(error));
 	        });
 	    };
 	};
@@ -45318,7 +45329,7 @@
 	        value: function render() {
 
 	            if (this.props.fetchedWeather && this.props.fetchedWeather.fetchError) {
-	                return _react2.default.createElement(_FetchError2.default, { message: 'Fetch error.' });
+	                return _react2.default.createElement(_FetchError2.default, { message: this.props.fetchedWeather.fetchError.message });
 	            }
 
 	            var fetchedWeather = {};
@@ -45521,7 +45532,7 @@
 	 */
 	var fetchedWeatherDefaultState = {
 	    isFetching: false,
-	    fetchError: false,
+	    fetchError: null,
 	    weather: {}
 	};
 	var fetchedWeather = function fetchedWeather() {
@@ -45532,12 +45543,12 @@
 	        case ActionTypes.REQUEST_WEATHER:
 	            return Object.assign({}, state, {
 	                isFetching: true,
-	                fetchError: false
+	                fetchError: null
 	            });
 	        case ActionTypes.SUCCESS_WEATHER:
 	            return Object.assign({}, state, {
 	                isFetching: false,
-	                fetchError: false,
+	                fetchError: null,
 	                weather: {
 	                    id: action.id,
 	                    temp: action.weather.main.temp,
@@ -45548,7 +45559,7 @@
 	        case ActionTypes.ERROR_WEATHER:
 	            return Object.assign({}, state, {
 	                isFetching: false,
-	                fetchError: true
+	                fetchError: action.fetchError
 	            });
 	        default:
 	            return state;

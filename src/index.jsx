@@ -31,6 +31,12 @@ import { getFromLocalStorage, saveToLocalStorage } from 'api';
 const store = createStore(rootReducer, getFromLocalStorage(), applyMiddleware(thunkMiddleware));
 
 
+store.subscribe(() => {
+    console.log(store.getState());
+});
+
+
+
 /**
  * Routing
  */

@@ -12,7 +12,7 @@ import * as ActionTypes from 'actionTypes';
  */
 const fetchedWeatherDefaultState = {
     isFetching: false,
-    fetchError: false,
+    fetchError: null,
     weather: {}
 };
 const fetchedWeather = (state = fetchedWeatherDefaultState, action) => {
@@ -20,12 +20,12 @@ const fetchedWeather = (state = fetchedWeatherDefaultState, action) => {
         case ActionTypes.REQUEST_WEATHER:
             return Object.assign({}, state, {
                 isFetching: true,
-                fetchError: false
+                fetchError: null
             });
         case ActionTypes.SUCCESS_WEATHER:
             return Object.assign({}, state, {
                 isFetching: false,
-                fetchError: false,
+                fetchError: null,
                 weather: {
                     id: action.id,
                     temp: action.weather.main.temp,
@@ -36,7 +36,7 @@ const fetchedWeather = (state = fetchedWeatherDefaultState, action) => {
         case ActionTypes.ERROR_WEATHER:
             return Object.assign({}, state, {
                 isFetching: false,
-                fetchError: true
+                fetchError: action.fetchError
             });
         default:
             return state;
