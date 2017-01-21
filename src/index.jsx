@@ -51,10 +51,17 @@ const routes = (
 
 
 
+function run() {
+    ReactDOM.render(
+        <Provider store={store}>
+            {routes}
+        </Provider>
+    ,document.getElementById('app'));
+}
+
+store.subscribe(() => {
+    run();
+});
 
 
-ReactDOM.render(
-    <Provider store={store}>
-        {routes}
-    </Provider>
-,document.getElementById('app'));
+run();

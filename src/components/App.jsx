@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Link } from 'react-router';
 
 /**
  * Components
@@ -7,14 +7,19 @@ import React from 'react';
 import SearchHistory from 'SearchHistory';
 import SearchForm from 'SearchForm';
 
-
 const App = ({ children }) => {
     return (
         <div className="container">
             <nav className="navbar navbar-default">
-                <span className="navbar-brand">
-                    WeatherApp by <a href="https://github.com/Bitveen" target="_blank">bitveen</a>
-                </span>
+                <div className="container-fluid">
+                    <span className="navbar-brand">
+                        WeatherApp by <a href="https://github.com/Bitveen" target="_blank">bitveen</a>
+                    </span>
+                    <ul className="nav navbar-nav navbar-right">
+                        <li><Link to="/">Get weather by current position</Link></li>
+                    </ul>
+                </div>
+
             </nav>
 
             <div className="row">

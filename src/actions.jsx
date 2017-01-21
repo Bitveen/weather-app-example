@@ -13,7 +13,9 @@ import uuid from 'uuid';
 const saveWeather = (weather) => {
     return {
         type: ActionTypes.SAVE_WEATHER,
-        weather
+        weather,
+        id: uuid(),
+        fetchedAt: Date.now()
     };
 };
 
@@ -61,6 +63,7 @@ export const fetchWeatherByCityName = (cityName) => {
             .then(response => response.json())
             .then(fetchedWeather => {
                 dispatch(successWeather(fetchedWeather));
+                dispatch(saveWeather(fetchedWeather));
             });
     };
 };

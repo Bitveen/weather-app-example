@@ -9,13 +9,14 @@ const mapStateToProps = (state) => {
     };
 };
 
+
 const SearchHistory = (props) => {
 
     const renderList = () => {
         return (
             props.searchHistory.map((weather) => {
                 return (
-                    <Link to={`/history/search/${weather.id}`} className="list-group-item" key={weather.id}>
+                    <Link to={`/history/search/${weather.id}`} key={weather.id} activeClassName="active" className="list-group-item" >
                         <h5 className="list-group-item-heading">{weather.city}</h5>
                         <p className="list-group-item-text">
                             Fetched at: <strong>{moment(weather.fetchedAt).format('DD.MM.YYYY HH:mm')}</strong>

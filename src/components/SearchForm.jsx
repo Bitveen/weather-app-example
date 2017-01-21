@@ -1,6 +1,24 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
+import { fetchWeatherByCityName } from 'actions';
 
-export default class SearchForm extends React.Component {
+
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetch: cityName => dispatch(fetchWeatherByCityName(cityName))
+    };
+};
+
+
+const mapStateToProps = (state) => {
+    return {
+        isFetching: state.fetchedWeather.isFetching
+    };
+};
+
+class SearchForm extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -10,7 +28,12 @@ export default class SearchForm extends React.Component {
         e.preventDefault();
         let cityName = this.refs.cityName.value;
         if (cityName) {
-            this.props.router.replace(`/search/${cityName}`);
+            if (browserHistory.getCurrentLocation().pathname === '/') {
+                browserHistory.push(`/search/${cityName}`);
+            } else {
+                this.props.fetch(cityName);
+                browserHistory.push(`/search/${cityName}`);
+            }
             this.refs.cityName.value = '';
         }
     }
@@ -29,7 +52,7 @@ export default class SearchForm extends React.Component {
                             ref="cityName"
                             placeholder="Type in city name..."/>
                         <span className="input-group-btn">
-                            <button className="btn btn-primary btn-md"
+                            <button disabled={this.props.isFetching} className="btn btn-primary btn-md"
                                 type="submit"><span className="glyphicon glyphicon-search" /> Search</button>
                         </span>
                     </div>
@@ -38,3 +61,5 @@ export default class SearchForm extends React.Component {
         );
     }
 };
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchForm);

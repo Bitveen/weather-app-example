@@ -42,26 +42,17 @@ const fetchedWeather = (state = fetchedWeatherDefaultState, action) => {
 
 
 
-const searchHistoryDefaultState = [
-    {
-        id: 1,
-        temp: -10,
-        city: 'Moscow',
-        fetchedAt: Date.now()
-    },
-    {
-        id: 2,
-        temp: -1,
-        city: 'Kudrovo',
-        fetchedAt: Date.now()
-    }
-];
 
-
-const searchHistory = (state = searchHistoryDefaultState, action) => {
+const searchHistory = (state = [], action) => {
     switch (action.type) {
         case ActionTypes.SAVE_WEATHER:
-            return state.concat([ action.weather ]);
+            let newWeather = {
+                id: action.id,
+                temp: action.weather.main.temp,
+                city: action.weather.name,
+                fetchedAt: action.fetchedAt
+            };
+            return state.concat([ newWeather ]);
         case ActionTypes.REMOVE_WEATHER:
             return state.filter(weather => weather.id !== action.id);
         default:

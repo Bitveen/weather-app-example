@@ -124,11 +124,19 @@
 	    )
 	);
 
-	_reactDom2.default.render(_react2.default.createElement(
-	    _reactRedux.Provider,
-	    { store: store },
-	    routes
-	), document.getElementById('app'));
+	function run() {
+	    _reactDom2.default.render(_react2.default.createElement(
+	        _reactRedux.Provider,
+	        { store: store },
+	        routes
+	    ), document.getElementById('app'));
+	}
+
+	store.subscribe(function () {
+	    run();
+	});
+
+	run();
 
 /***/ },
 /* 1 */
@@ -29117,6 +29125,8 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reactRouter = __webpack_require__(178);
+
 	var _SearchHistory = __webpack_require__(276);
 
 	var _SearchHistory2 = _interopRequireDefault(_SearchHistory);
@@ -29140,13 +29150,30 @@
 	            'nav',
 	            { className: 'navbar navbar-default' },
 	            _react2.default.createElement(
-	                'span',
-	                { className: 'navbar-brand' },
-	                'WeatherApp by ',
+	                'div',
+	                { className: 'container-fluid' },
 	                _react2.default.createElement(
-	                    'a',
-	                    { href: 'https://github.com/Bitveen', target: '_blank' },
-	                    'bitveen'
+	                    'span',
+	                    { className: 'navbar-brand' },
+	                    'WeatherApp by ',
+	                    _react2.default.createElement(
+	                        'a',
+	                        { href: 'https://github.com/Bitveen', target: '_blank' },
+	                        'bitveen'
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'ul',
+	                    { className: 'nav navbar-nav navbar-right' },
+	                    _react2.default.createElement(
+	                        'li',
+	                        null,
+	                        _react2.default.createElement(
+	                            _reactRouter.Link,
+	                            { to: '/' },
+	                            'Get weather by current position'
+	                        )
+	                    )
 	                )
 	            )
 	        ),
@@ -29216,7 +29243,7 @@
 	        return props.searchHistory.map(function (weather) {
 	            return _react2.default.createElement(
 	                _reactRouter.Link,
-	                { to: '/history/search/' + weather.id, className: 'list-group-item', key: weather.id },
+	                { to: '/history/search/' + weather.id, key: weather.id, activeClassName: 'active', className: 'list-group-item' },
 	                _react2.default.createElement(
 	                    'h5',
 	                    { className: 'list-group-item-heading' },
@@ -44158,6 +44185,12 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reactRedux = __webpack_require__(259);
+
+	var _reactRouter = __webpack_require__(178);
+
+	var _actions = __webpack_require__(389);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -44165,6 +44198,20 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	    return {
+	        fetch: function fetch(cityName) {
+	            return dispatch((0, _actions.fetchWeatherByCityName)(cityName));
+	        }
+	    };
+	};
+
+	var mapStateToProps = function mapStateToProps(state) {
+	    return {
+	        isFetching: state.fetchedWeather.isFetching
+	    };
+	};
 
 	var SearchForm = function (_React$Component) {
 	    _inherits(SearchForm, _React$Component);
@@ -44184,7 +44231,12 @@
 	            e.preventDefault();
 	            var cityName = this.refs.cityName.value;
 	            if (cityName) {
-	                this.props.router.replace('/search/' + cityName);
+	                if (_reactRouter.browserHistory.getCurrentLocation().pathname === '/') {
+	                    _reactRouter.browserHistory.push('/search/' + cityName);
+	                } else {
+	                    this.props.fetch(cityName);
+	                    _reactRouter.browserHistory.push('/search/' + cityName);
+	                }
 	                this.refs.cityName.value = '';
 	            }
 	        }
@@ -44219,7 +44271,7 @@
 	                            { className: 'input-group-btn' },
 	                            _react2.default.createElement(
 	                                'button',
-	                                { className: 'btn btn-primary btn-md',
+	                                { disabled: this.props.isFetching, className: 'btn btn-primary btn-md',
 	                                    type: 'submit' },
 	                                _react2.default.createElement('span', { className: 'glyphicon glyphicon-search' }),
 	                                ' Search'
@@ -44234,8 +44286,9 @@
 	    return SearchForm;
 	}(_react2.default.Component);
 
-	exports.default = SearchForm;
 	;
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(SearchForm);
 
 /***/ },
 /* 388 */
@@ -44313,7 +44366,9 @@
 	var saveWeather = function saveWeather(weather) {
 	    return {
 	        type: ActionTypes.SAVE_WEATHER,
-	        weather: weather
+	        weather: weather,
+	        id: (0, _uuid2.default)(),
+	        fetchedAt: Date.now()
 	    };
 	};
 
@@ -44358,6 +44413,7 @@
 	            return response.json();
 	        }).then(function (fetchedWeather) {
 	            dispatch(successWeather(fetchedWeather));
+	            dispatch(saveWeather(fetchedWeather));
 	        });
 	    };
 	};
@@ -45152,6 +45208,8 @@
 
 	var _moment2 = _interopRequireDefault(_moment);
 
+	var _reactRouter = __webpack_require__(178);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -45173,26 +45231,25 @@
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
 	            if (this.props.fetch) {
-	                if (this.props.cityName) {
-	                    this.props.fetch(this.props.cityName);
+	                if (this.props.params.cityName) {
+	                    this.props.fetch(this.props.params.cityName);
 	                } else {
 	                    this.props.fetch();
 	                }
 	            }
 	        }
-
-	        // componentWillReceiveProps(nextProps) {
-	        //     console.log(nextProps);
-	        //     if (this.props.fetch && (nextProps.cityName !== this.props.fetchedWeather.weather.city)) {
-	        //         this.props.fetch(this.props.cityName);
-	        //     }
-	        // }
-
-
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var fetchedWeather = this.props.fetchedWeather;
+
+	            var fetchedWeather = {};
+	            if (this.props.fetchedWeather) {
+	                fetchedWeather = this.props.fetchedWeather;
+	            } else {
+	                fetchedWeather = {
+	                    weather: this.props.weather
+	                };
+	            }
 
 	            return _react2.default.createElement(
 	                'div',
@@ -45210,13 +45267,8 @@
 	                        _react2.default.createElement(
 	                            'h4',
 	                            null,
-	                            this.props.cityName ? "City" : "Your current location is",
-	                            ': ',
-	                            _react2.default.createElement(
-	                                'strong',
-	                                null,
-	                                fetchedWeather.weather.city
-	                            )
+	                            _reactRouter.browserHistory.getCurrentLocation().pathname === '/' ? "Your current location is: " : "City: ",
+	                            fetchedWeather.weather.city
 	                        ),
 	                        'Fetched at: ',
 	                        _react2.default.createElement(
@@ -45306,15 +45358,28 @@
 
 	var _Weather2 = _interopRequireDefault(_Weather);
 
+	var _actions = __webpack_require__(389);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var mapStateToProps = function mapStateToProps(state) {
+	var mapStateToProps = function mapStateToProps(state, _ref) {
+	    var id = _ref.params.id;
+
 	    return {
-	        fetchedWeather: state.fetchedWeather
+	        weather: state.searchHistory.filter(function (weather) {
+	            return weather.id === id;
+	        })[0]
+	    };
+	};
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	    return {
+	        remove: function remove(id) {
+	            return dispatch((0, _actions.removeWeather)(parseInt(id)));
+	        }
 	    };
 	};
 
-	exports.default = (0, _reactRedux.connect)(mapStateToProps)(_Weather2.default);
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_Weather2.default);
 
 /***/ },
 /* 402 */
@@ -45372,25 +45437,19 @@
 	    }
 	};
 
-	var searchHistoryDefaultState = [{
-	    id: 1,
-	    temp: -10,
-	    city: 'Moscow',
-	    fetchedAt: Date.now()
-	}, {
-	    id: 2,
-	    temp: -1,
-	    city: 'Kudrovo',
-	    fetchedAt: Date.now()
-	}];
-
 	var searchHistory = function searchHistory() {
-	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : searchHistoryDefaultState;
+	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 	    var action = arguments[1];
 
 	    switch (action.type) {
 	        case ActionTypes.SAVE_WEATHER:
-	            return state.concat([action.weather]);
+	            var newWeather = {
+	                id: action.id,
+	                temp: action.weather.main.temp,
+	                city: action.weather.name,
+	                fetchedAt: action.fetchedAt
+	            };
+	            return state.concat([newWeather]);
 	        case ActionTypes.REMOVE_WEATHER:
 	            return state.filter(function (weather) {
 	                return weather.id !== action.id;
