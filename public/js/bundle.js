@@ -86,20 +86,12 @@
 
 	var _reducers2 = _interopRequireDefault(_reducers);
 
+	var _api = __webpack_require__(391);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	/**
 	 * Store
-	 */
-	var store = (0, _redux.createStore)(_reducers2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default));
-
-	//
-	// store.subscribe(() => {
-	//     console.log(store.getState());
-	// });
-
-	/**
-	 * Routing
 	 */
 
 
@@ -110,6 +102,11 @@
 
 	/**
 	 * Components
+	 */
+	var store = (0, _redux.createStore)(_reducers2.default, (0, _api.getFromLocalStorage)(), (0, _redux.applyMiddleware)(_reduxThunk2.default));
+
+	/**
+	 * Routing
 	 */
 	var history = (0, _reactRouterRedux.syncHistoryWithStore)(_reactRouter.browserHistory, store);
 	var routes = _react2.default.createElement(
@@ -124,19 +121,15 @@
 	    )
 	);
 
-	function run() {
-	    _reactDom2.default.render(_react2.default.createElement(
-	        _reactRedux.Provider,
-	        { store: store },
-	        routes
-	    ), document.getElementById('app'));
-	}
+	_reactDom2.default.render(_react2.default.createElement(
+	    _reactRedux.Provider,
+	    { store: store },
+	    routes
+	), document.getElementById('app'));
 
 	store.subscribe(function () {
-	    run();
+	    (0, _api.saveToLocalStorage)(store.getState());
 	});
-
-	run();
 
 /***/ },
 /* 1 */
@@ -44469,7 +44462,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.getWeatherByCityName = exports.getWeatherByCurrentPosition = undefined;
+	exports.getFromLocalStorage = exports.saveToLocalStorage = exports.getWeatherByCityName = exports.getWeatherByCurrentPosition = undefined;
 
 	var _isomorphicFetch = __webpack_require__(392);
 
@@ -44501,6 +44494,18 @@
 
 	var getWeatherByCityName = exports.getWeatherByCityName = function getWeatherByCityName(cityName) {
 	    return (0, _isomorphicFetch2.default)(WEATHER_URL + '&q=' + cityName);
+	};
+
+	var saveToLocalStorage = exports.saveToLocalStorage = function saveToLocalStorage(state) {
+	    localStorage.setItem('state', JSON.stringify(state));
+	};
+
+	var getFromLocalStorage = exports.getFromLocalStorage = function getFromLocalStorage() {
+	    var state = localStorage.getItem('state');
+	    if (state) {
+	        return JSON.parse(state);
+	    }
+	    return {};
 	};
 
 /***/ },

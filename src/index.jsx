@@ -20,7 +20,7 @@ import WeatherBySearchHistory from 'WeatherBySearchHistory';
  * Other imports
  */
 import rootReducer from 'reducers';
-
+import { getFromLocalStorage, saveToLocalStorage } from 'api';
 
 
 
@@ -28,12 +28,8 @@ import rootReducer from 'reducers';
 /**
  * Store
  */
-const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
+const store = createStore(rootReducer, getFromLocalStorage(), applyMiddleware(thunkMiddleware));
 
-//
-// store.subscribe(() => {
-//     console.log(store.getState());
-// });
 
 /**
  * Routing
@@ -50,18 +46,13 @@ const routes = (
 );
 
 
+ReactDOM.render(
+    <Provider store={store}>
+        {routes}
+    </Provider>
+,document.getElementById('app'));
 
-function run() {
-    ReactDOM.render(
-        <Provider store={store}>
-            {routes}
-        </Provider>
-    ,document.getElementById('app'));
-}
 
 store.subscribe(() => {
-    run();
+    saveToLocalStorage(store.getState());
 });
-
-
-run();

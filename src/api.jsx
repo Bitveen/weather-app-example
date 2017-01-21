@@ -27,3 +27,17 @@ export const getWeatherByCurrentPosition = () => {
 export const getWeatherByCityName = (cityName) => {
     return fetch(`${WEATHER_URL}&q=${cityName}`);
 };
+
+
+
+export const saveToLocalStorage = (state) => {
+    localStorage.setItem('state', JSON.stringify(state));
+};
+
+export const getFromLocalStorage = () => {
+    let state = localStorage.getItem('state');
+    if (state) {
+        return JSON.parse(state);
+    }
+    return {};
+};
