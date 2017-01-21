@@ -19,7 +19,7 @@ const saveWeather = (weather) => {
     };
 };
 
-const removeWeather = (id) => {
+export const removeWeather = (id) => {
     return {
         type: ActionTypes.REMOVE_WEATHER,
         id

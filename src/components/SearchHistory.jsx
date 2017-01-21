@@ -12,11 +12,27 @@ const mapStateToProps = (state) => {
 
 const SearchHistory = (props) => {
 
+
+    props.searchHistory.sort((a, b) => {
+        if (a.fetchedAt < b.fetchedAt) {
+            return 1;
+        } else if (a.fetchedAt > b.fetchedAt){
+            return -1;
+        }
+        return 0;
+    });
+
+
     const renderList = () => {
+        if (!props.searchHistory.length) {
+            return <h4 className="text-center">History is empty.</h4>
+        }
         return (
             props.searchHistory.map((weather) => {
                 return (
-                    <Link to={`/history/search/${weather.id}`} key={weather.id} activeClassName="active" className="list-group-item" >
+                    <Link to={`/history/search/${weather.id}`}
+                        key={weather.id} activeClassName="active"
+                        className="list-group-item">
                         <h5 className="list-group-item-heading">{weather.city}</h5>
                         <p className="list-group-item-text">
                             Fetched at: <strong>{moment(weather.fetchedAt).format('DD.MM.YYYY HH:mm')}</strong>

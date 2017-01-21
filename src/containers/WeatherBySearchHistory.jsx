@@ -10,7 +10,7 @@ const mapStateToProps = (state, { params: { id } }) => {
 };
 const mapDispatchToProps = (dispatch) => {
     return {
-        remove: id => dispatch(removeWeather(parseInt(id)))
+        remove: id => dispatch(removeWeather(id))
     };
 };
 

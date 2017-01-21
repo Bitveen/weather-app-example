@@ -29239,11 +29239,29 @@
 
 	var SearchHistory = function SearchHistory(props) {
 
+	    props.searchHistory.sort(function (a, b) {
+	        if (a.fetchedAt < b.fetchedAt) {
+	            return 1;
+	        } else if (a.fetchedAt > b.fetchedAt) {
+	            return -1;
+	        }
+	        return 0;
+	    });
+
 	    var renderList = function renderList() {
+	        if (!props.searchHistory.length) {
+	            return _react2.default.createElement(
+	                'h4',
+	                { className: 'text-center' },
+	                'History is empty.'
+	            );
+	        }
 	        return props.searchHistory.map(function (weather) {
 	            return _react2.default.createElement(
 	                _reactRouter.Link,
-	                { to: '/history/search/' + weather.id, key: weather.id, activeClassName: 'active', className: 'list-group-item' },
+	                { to: '/history/search/' + weather.id,
+	                    key: weather.id, activeClassName: 'active',
+	                    className: 'list-group-item' },
 	                _react2.default.createElement(
 	                    'h5',
 	                    { className: 'list-group-item-heading' },
@@ -44343,7 +44361,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.fetchWeatherByCityName = exports.fetchWeatherByPosition = undefined;
+	exports.fetchWeatherByCityName = exports.fetchWeatherByPosition = exports.removeWeather = undefined;
 
 	var _actionTypes = __webpack_require__(390);
 
@@ -44372,7 +44390,7 @@
 	    };
 	};
 
-	var removeWeather = function removeWeather(id) {
+	var removeWeather = exports.removeWeather = function removeWeather(id) {
 	    return {
 	        type: ActionTypes.REMOVE_WEATHER,
 	        id: id
@@ -45224,7 +45242,10 @@
 	    function Weather(props) {
 	        _classCallCheck(this, Weather);
 
-	        return _possibleConstructorReturn(this, (Weather.__proto__ || Object.getPrototypeOf(Weather)).call(this, props));
+	        var _this = _possibleConstructorReturn(this, (Weather.__proto__ || Object.getPrototypeOf(Weather)).call(this, props));
+
+	        _this.handleRemoveClick = _this.handleRemoveClick.bind(_this);
+	        return _this;
 	    }
 
 	    _createClass(Weather, [{
@@ -45237,6 +45258,12 @@
 	                    this.props.fetch();
 	                }
 	            }
+	        }
+	    }, {
+	        key: 'handleRemoveClick',
+	        value: function handleRemoveClick() {
+	            _reactRouter.browserHistory.push('/');
+	            this.props.remove(this.props.params.id);
 	        }
 	    }, {
 	        key: 'render',
@@ -45286,7 +45313,12 @@
 	                            fetchedWeather.weather.temp,
 	                            ' \xB0C'
 	                        )
-	                    )
+	                    ),
+	                    this.props.remove ? _react2.default.createElement(
+	                        'button',
+	                        { onClick: this.handleRemoveClick, className: 'btn btn-danger btn-sm' },
+	                        'Remove from history'
+	                    ) : null
 	                )
 	            );
 	        }
@@ -45374,7 +45406,7 @@
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 	    return {
 	        remove: function remove(id) {
-	            return dispatch((0, _actions.removeWeather)(parseInt(id)));
+	            return dispatch((0, _actions.removeWeather)(id));
 	        }
 	    };
 	};

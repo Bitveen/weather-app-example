@@ -7,6 +7,7 @@ export default class Weather extends React.Component {
 
     constructor(props) {
         super(props);
+        this.handleRemoveClick = this.handleRemoveClick.bind(this);
     }
 
     componentDidMount() {
@@ -17,6 +18,12 @@ export default class Weather extends React.Component {
                 this.props.fetch();
             }
         }
+    }
+
+
+    handleRemoveClick() {
+        browserHistory.push(`/`);
+        this.props.remove(this.props.params.id);
     }
 
 
@@ -49,6 +56,7 @@ export default class Weather extends React.Component {
                             <div className="weather-temperature">
                                 <h1 className="text-center">{fetchedWeather.weather.temp} °C</h1>
                             </div>
+                            { this.props.remove ? <button onClick={this.handleRemoveClick} className="btn btn-danger btn-sm">Remove from history</button> : null }
                         </div>
                     )
                 }
