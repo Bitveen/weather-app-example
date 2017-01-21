@@ -1,5 +1,7 @@
 import React from 'react';
 import moment from 'moment';
+import FetchError from 'FetchError';
+
 import { browserHistory } from 'react-router';
 
 
@@ -29,6 +31,11 @@ export default class Weather extends React.Component {
 
 
     render() {
+
+        if (this.props.fetchedWeather && this.props.fetchedWeather.fetchError) {
+            return <FetchError message="Fetch error." />
+        }
+
 
         let fetchedWeather = {};
         if (this.props.fetchedWeather) {

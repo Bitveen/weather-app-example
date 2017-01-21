@@ -46,6 +46,13 @@ const successWeather = (weather) => {
         fetchedAt: Date.now()
     };
 };
+
+const errorWeather = () => {
+    return {
+        type: ActionTypes.ERROR_WEATHER
+    };
+};
+
 export const fetchWeatherByPosition = () => {
     return dispatch => {
         dispatch(requestWeather());
@@ -53,6 +60,8 @@ export const fetchWeatherByPosition = () => {
             .then(response => response.json())
             .then(fetchedWeather => {
                 dispatch(successWeather(fetchedWeather));
+            }).catch(() => {
+                dispatch(errorWeather());
             });
     };
 };
@@ -64,6 +73,8 @@ export const fetchWeatherByCityName = (cityName) => {
             .then(fetchedWeather => {
                 dispatch(successWeather(fetchedWeather));
                 dispatch(saveWeather(fetchedWeather));
+            }).catch(() => {
+                dispatch(errorWeather());
             });
     };
 };

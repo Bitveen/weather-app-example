@@ -70,23 +70,27 @@
 
 	var _App2 = _interopRequireDefault(_App);
 
-	var _CurrentLocationWeather = __webpack_require__(388);
+	var _CurrentLocationWeather = __webpack_require__(399);
 
 	var _CurrentLocationWeather2 = _interopRequireDefault(_CurrentLocationWeather);
 
-	var _WeatherByCity = __webpack_require__(400);
+	var _WeatherByCity = __webpack_require__(401);
 
 	var _WeatherByCity2 = _interopRequireDefault(_WeatherByCity);
 
-	var _WeatherBySearchHistory = __webpack_require__(401);
+	var _WeatherBySearchHistory = __webpack_require__(402);
 
 	var _WeatherBySearchHistory2 = _interopRequireDefault(_WeatherBySearchHistory);
 
-	var _reducers = __webpack_require__(402);
+	var _NotFound = __webpack_require__(403);
+
+	var _NotFound2 = _interopRequireDefault(_NotFound);
+
+	var _reducers = __webpack_require__(404);
 
 	var _reducers2 = _interopRequireDefault(_reducers);
 
-	var _api = __webpack_require__(391);
+	var _api = __webpack_require__(390);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -94,19 +98,18 @@
 	 * Store
 	 */
 
-
 	/**
 	 * Other imports
-	 */
-
-
-	/**
-	 * Components
 	 */
 	var store = (0, _redux.createStore)(_reducers2.default, (0, _api.getFromLocalStorage)(), (0, _redux.applyMiddleware)(_reduxThunk2.default));
 
 	/**
 	 * Routing
+	 */
+
+
+	/**
+	 * Components
 	 */
 	var history = (0, _reactRouterRedux.syncHistoryWithStore)(_reactRouter.browserHistory, store);
 	var routes = _react2.default.createElement(
@@ -117,7 +120,8 @@
 	        { component: _App2.default, path: '/' },
 	        _react2.default.createElement(_reactRouter.IndexRoute, { component: _CurrentLocationWeather2.default }),
 	        _react2.default.createElement(_reactRouter.Route, { component: _WeatherBySearchHistory2.default, path: '/history/search/:id' }),
-	        _react2.default.createElement(_reactRouter.Route, { component: _WeatherByCity2.default, path: '/search/:cityName' })
+	        _react2.default.createElement(_reactRouter.Route, { component: _WeatherByCity2.default, path: '/search/:cityName' }),
+	        _react2.default.createElement(_reactRouter.Route, { path: '*', component: _NotFound2.default })
 	    )
 	);
 
@@ -29128,48 +29132,19 @@
 
 	var _SearchForm2 = _interopRequireDefault(_SearchForm);
 
+	var _Navbar = __webpack_require__(398);
+
+	var _Navbar2 = _interopRequireDefault(_Navbar);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	/**
-	 * Components
-	 */
 	var App = function App(_ref) {
 	    var children = _ref.children;
 
 	    return _react2.default.createElement(
 	        'div',
 	        { className: 'container' },
-	        _react2.default.createElement(
-	            'nav',
-	            { className: 'navbar navbar-default' },
-	            _react2.default.createElement(
-	                'div',
-	                { className: 'container-fluid' },
-	                _react2.default.createElement(
-	                    'span',
-	                    { className: 'navbar-brand' },
-	                    'WeatherApp by ',
-	                    _react2.default.createElement(
-	                        'a',
-	                        { href: 'https://github.com/Bitveen', target: '_blank' },
-	                        'bitveen'
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    'ul',
-	                    { className: 'nav navbar-nav navbar-right' },
-	                    _react2.default.createElement(
-	                        'li',
-	                        null,
-	                        _react2.default.createElement(
-	                            _reactRouter.Link,
-	                            { to: '/' },
-	                            'Get weather by current position'
-	                        )
-	                    )
-	                )
-	            )
-	        ),
+	        _react2.default.createElement(_Navbar2.default, null),
 	        _react2.default.createElement(
 	            'div',
 	            { className: 'row' },
@@ -29185,8 +29160,7 @@
 	                        'div',
 	                        { className: 'panel-body' },
 	                        children
-	                    ),
-	                    _react2.default.createElement('div', { className: 'panel-footer' })
+	                    )
 	                )
 	            ),
 	            _react2.default.createElement(
@@ -44200,7 +44174,7 @@
 
 	var _reactRouter = __webpack_require__(178);
 
-	var _actions = __webpack_require__(389);
+	var _actions = __webpack_require__(388);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -44310,59 +44284,15 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRedux = __webpack_require__(259);
-
-	var _actions = __webpack_require__(389);
-
-	var _moment = __webpack_require__(277);
-
-	var _moment2 = _interopRequireDefault(_moment);
-
-	var _Weather = __webpack_require__(399);
-
-	var _Weather2 = _interopRequireDefault(_Weather);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-	    return {
-	        fetch: function fetch() {
-	            return dispatch((0, _actions.fetchWeatherByPosition)());
-	        }
-	    };
-	};
-
-	var mapStateToProps = function mapStateToProps(state) {
-	    return {
-	        fetchedWeather: state.fetchedWeather
-	    };
-	};
-
-	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_Weather2.default);
-
-/***/ },
-/* 389 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
 	exports.fetchWeatherByCityName = exports.fetchWeatherByPosition = exports.removeWeather = undefined;
 
-	var _actionTypes = __webpack_require__(390);
+	var _actionTypes = __webpack_require__(389);
 
 	var ActionTypes = _interopRequireWildcard(_actionTypes);
 
-	var _api = __webpack_require__(391);
+	var _api = __webpack_require__(390);
 
-	var _uuid = __webpack_require__(394);
+	var _uuid = __webpack_require__(393);
 
 	var _uuid2 = _interopRequireDefault(_uuid);
 
@@ -44407,6 +44337,13 @@
 	        fetchedAt: Date.now()
 	    };
 	};
+
+	var errorWeather = function errorWeather() {
+	    return {
+	        type: ActionTypes.ERROR_WEATHER
+	    };
+	};
+
 	var fetchWeatherByPosition = exports.fetchWeatherByPosition = function fetchWeatherByPosition() {
 	    return function (dispatch) {
 	        dispatch(requestWeather());
@@ -44414,6 +44351,8 @@
 	            return response.json();
 	        }).then(function (fetchedWeather) {
 	            dispatch(successWeather(fetchedWeather));
+	        }).catch(function () {
+	            dispatch(errorWeather());
 	        });
 	    };
 	};
@@ -44425,12 +44364,14 @@
 	        }).then(function (fetchedWeather) {
 	            dispatch(successWeather(fetchedWeather));
 	            dispatch(saveWeather(fetchedWeather));
+	        }).catch(function () {
+	            dispatch(errorWeather());
 	        });
 	    };
 	};
 
 /***/ },
-/* 390 */
+/* 389 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -44454,7 +44395,7 @@
 	var REMOVE_WEATHER = exports.REMOVE_WEATHER = 'REMOVE_WEATHER';
 
 /***/ },
-/* 391 */
+/* 390 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -44464,7 +44405,7 @@
 	});
 	exports.getFromLocalStorage = exports.saveToLocalStorage = exports.getWeatherByCityName = exports.getWeatherByCurrentPosition = undefined;
 
-	var _isomorphicFetch = __webpack_require__(392);
+	var _isomorphicFetch = __webpack_require__(391);
 
 	var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
 
@@ -44509,19 +44450,19 @@
 	};
 
 /***/ },
-/* 392 */
+/* 391 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// the whatwg-fetch polyfill installs the fetch() function
 	// on the global object (window or self)
 	//
 	// Return that as the export for use in Webpack, Browserify etc.
-	__webpack_require__(393);
+	__webpack_require__(392);
 	module.exports = self.fetch.bind(self);
 
 
 /***/ },
-/* 393 */
+/* 392 */
 /***/ function(module, exports) {
 
 	(function(self) {
@@ -44985,11 +44926,11 @@
 
 
 /***/ },
-/* 394 */
+/* 393 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var v1 = __webpack_require__(395);
-	var v4 = __webpack_require__(398);
+	var v1 = __webpack_require__(394);
+	var v4 = __webpack_require__(397);
 
 	var uuid = v4;
 	uuid.v1 = v1;
@@ -44999,14 +44940,14 @@
 
 
 /***/ },
-/* 395 */
+/* 394 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Unique ID creation requires a high quality random # generator.  We feature
 	// detect to determine the best RNG source, normalizing to a function that
 	// returns 128-bits of randomness, since that's what's usually required
-	var rng = __webpack_require__(396);
-	var bytesToUuid = __webpack_require__(397);
+	var rng = __webpack_require__(395);
+	var bytesToUuid = __webpack_require__(396);
 
 	// **`v1()` - Generate time-based UUID**
 	//
@@ -45108,7 +45049,7 @@
 
 
 /***/ },
-/* 396 */
+/* 395 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {// Unique ID creation requires a high quality random # generator.  In the
@@ -45148,7 +45089,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 397 */
+/* 396 */
 /***/ function(module, exports) {
 
 	/**
@@ -45177,11 +45118,11 @@
 
 
 /***/ },
-/* 398 */
+/* 397 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var rng = __webpack_require__(396);
-	var bytesToUuid = __webpack_require__(397);
+	var rng = __webpack_require__(395);
+	var bytesToUuid = __webpack_require__(396);
 
 	function v4(options, buf, offset) {
 	  var i = buf && offset || 0;
@@ -45212,7 +45153,105 @@
 
 
 /***/ },
+/* 398 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(178);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Navbar = function Navbar() {
+	    return _react2.default.createElement(
+	        'nav',
+	        { className: 'navbar navbar-default' },
+	        _react2.default.createElement(
+	            'div',
+	            { className: 'container-fluid' },
+	            _react2.default.createElement(
+	                'span',
+	                { className: 'navbar-brand' },
+	                'WeatherApp by ',
+	                _react2.default.createElement(
+	                    'a',
+	                    { href: 'https://github.com/Bitveen', target: '_blank' },
+	                    'bitveen'
+	                )
+	            ),
+	            _react2.default.createElement(
+	                'ul',
+	                { className: 'nav navbar-nav navbar-right' },
+	                _react2.default.createElement(
+	                    'li',
+	                    null,
+	                    _react2.default.createElement(
+	                        _reactRouter.Link,
+	                        { to: '/' },
+	                        'Get weather by current position'
+	                    )
+	                )
+	            )
+	        )
+	    );
+	};
+
+	exports.default = Navbar;
+
+/***/ },
 /* 399 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(259);
+
+	var _actions = __webpack_require__(388);
+
+	var _moment = __webpack_require__(277);
+
+	var _moment2 = _interopRequireDefault(_moment);
+
+	var _Weather = __webpack_require__(400);
+
+	var _Weather2 = _interopRequireDefault(_Weather);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	    return {
+	        fetch: function fetch() {
+	            return dispatch((0, _actions.fetchWeatherByPosition)());
+	        }
+	    };
+	};
+
+	var mapStateToProps = function mapStateToProps(state) {
+	    return {
+	        fetchedWeather: state.fetchedWeather
+	    };
+	};
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_Weather2.default);
+
+/***/ },
+/* 400 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -45230,6 +45269,10 @@
 	var _moment = __webpack_require__(277);
 
 	var _moment2 = _interopRequireDefault(_moment);
+
+	var _FetchError = __webpack_require__(405);
+
+	var _FetchError2 = _interopRequireDefault(_FetchError);
 
 	var _reactRouter = __webpack_require__(178);
 
@@ -45273,6 +45316,10 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
+
+	            if (this.props.fetchedWeather && this.props.fetchedWeather.fetchError) {
+	                return _react2.default.createElement(_FetchError2.default, { message: 'Fetch error.' });
+	            }
 
 	            var fetchedWeather = {};
 	            if (this.props.fetchedWeather) {
@@ -45336,7 +45383,7 @@
 	;
 
 /***/ },
-/* 400 */
+/* 401 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -45351,9 +45398,9 @@
 
 	var _reactRedux = __webpack_require__(259);
 
-	var _actions = __webpack_require__(389);
+	var _actions = __webpack_require__(388);
 
-	var _Weather = __webpack_require__(399);
+	var _Weather = __webpack_require__(400);
 
 	var _Weather2 = _interopRequireDefault(_Weather);
 
@@ -45376,7 +45423,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_Weather2.default);
 
 /***/ },
-/* 401 */
+/* 402 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -45391,11 +45438,11 @@
 
 	var _reactRedux = __webpack_require__(259);
 
-	var _Weather = __webpack_require__(399);
+	var _Weather = __webpack_require__(400);
 
 	var _Weather2 = _interopRequireDefault(_Weather);
 
-	var _actions = __webpack_require__(389);
+	var _actions = __webpack_require__(388);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -45419,7 +45466,37 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_Weather2.default);
 
 /***/ },
-/* 402 */
+/* 403 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var NotFound = function NotFound() {
+	    return _react2.default.createElement(
+	        "div",
+	        { className: "not-found" },
+	        _react2.default.createElement(
+	            "h3",
+	            { className: "text-center" },
+	            "The page you are looking for does not exist."
+	        )
+	    );
+	};
+
+	exports.default = NotFound;
+
+/***/ },
+/* 404 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -45432,7 +45509,7 @@
 
 	var _redux = __webpack_require__(233);
 
-	var _actionTypes = __webpack_require__(390);
+	var _actionTypes = __webpack_require__(389);
 
 	var ActionTypes = _interopRequireWildcard(_actionTypes);
 
@@ -45444,6 +45521,7 @@
 	 */
 	var fetchedWeatherDefaultState = {
 	    isFetching: false,
+	    fetchError: false,
 	    weather: {}
 	};
 	var fetchedWeather = function fetchedWeather() {
@@ -45453,11 +45531,13 @@
 	    switch (action.type) {
 	        case ActionTypes.REQUEST_WEATHER:
 	            return Object.assign({}, state, {
-	                isFetching: true
+	                isFetching: true,
+	                fetchError: false
 	            });
 	        case ActionTypes.SUCCESS_WEATHER:
 	            return Object.assign({}, state, {
 	                isFetching: false,
+	                fetchError: false,
 	                weather: {
 	                    id: action.id,
 	                    temp: action.weather.main.temp,
@@ -45467,7 +45547,8 @@
 	            });
 	        case ActionTypes.ERROR_WEATHER:
 	            return Object.assign({}, state, {
-	                isFetching: false
+	                isFetching: false,
+	                fetchError: true
 	            });
 	        default:
 	            return state;
@@ -45501,6 +45582,36 @@
 	    fetchedWeather: fetchedWeather,
 	    searchHistory: searchHistory
 	});
+
+/***/ },
+/* 405 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var FetchError = function FetchError(props) {
+	    return _react2.default.createElement(
+	        "div",
+	        { className: "fetch-error" },
+	        _react2.default.createElement(
+	            "h4",
+	            { className: "text-center" },
+	            props.message
+	        )
+	    );
+	};
+
+	exports.default = FetchError;
 
 /***/ }
 /******/ ]);

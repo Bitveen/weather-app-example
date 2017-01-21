@@ -12,17 +12,20 @@ import * as ActionTypes from 'actionTypes';
  */
 const fetchedWeatherDefaultState = {
     isFetching: false,
+    fetchError: false,
     weather: {}
 };
 const fetchedWeather = (state = fetchedWeatherDefaultState, action) => {
     switch (action.type) {
         case ActionTypes.REQUEST_WEATHER:
             return Object.assign({}, state, {
-                isFetching: true
+                isFetching: true,
+                fetchError: false
             });
         case ActionTypes.SUCCESS_WEATHER:
             return Object.assign({}, state, {
                 isFetching: false,
+                fetchError: false,
                 weather: {
                     id: action.id,
                     temp: action.weather.main.temp,
@@ -32,7 +35,8 @@ const fetchedWeather = (state = fetchedWeatherDefaultState, action) => {
             });
         case ActionTypes.ERROR_WEATHER:
             return Object.assign({}, state, {
-                isFetching: false
+                isFetching: false,
+                fetchError: true
             });
         default:
             return state;

@@ -15,7 +15,7 @@ import App from 'App';
 import CurrentLocationWeather from 'CurrentLocationWeather';
 import WeatherByCity from 'WeatherByCity';
 import WeatherBySearchHistory from 'WeatherBySearchHistory';
-
+import NotFound from 'NotFound';
 /**
  * Other imports
  */
@@ -41,6 +41,7 @@ const routes = (
             <IndexRoute component={CurrentLocationWeather} />
             <Route component={WeatherBySearchHistory} path='/history/search/:id'/>
             <Route component={WeatherByCity} path='/search/:cityName'/>
+            <Route path='*' component={NotFound} />
         </Route>
     </Router>
 );

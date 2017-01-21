@@ -4,7 +4,8 @@
   "description": "Simple Weather App",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "karma start"
   },
   "keywords": [
     "React",
